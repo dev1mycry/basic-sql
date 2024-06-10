@@ -1,2 +1,2 @@
-# basic-sql
-Consultas feitas na ferramenta de banco de dados Dbeaver
+# Basic-SQL
+Consultas feitas no editor SQL Dbeaver

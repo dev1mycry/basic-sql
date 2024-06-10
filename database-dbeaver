@@ -1,0 +1,55 @@
+-- BUSCAS NO BANCO DE DADOS SAMPLE DATABASE DO Dbeaver
+SELECT * FROM Album a ;
+SELECT COUNT(*) as Records FROM Album a;
+
+SELECT COUNT(*) FROM Album a WHERE COLUMN1 IS NOT NULL;
+SELECT AlbumId, Title FROM Album a WHERE Column1 is NULL;
+
+SELECT * FROM Artist a;
+
+-- CARACTERIZANDO OS RESGISTROS DOS ARTISTAS
+SELECT a.ArtistId, a2.Name, COUNT(*) as Records FROM Album a INNER JOIN Artist a2 GROUP BY 1;
+SELECT a.ArtistId, a2.Name, COUNT(*) as Records FROM Album a INNER JOIN Artist a2 GROUP BY 1 ORDER BY Records LIMIT 3;
+
+-- CARACTERIZANDO OS REGISTROS DE CUSTOMERS
+SELECT * FROM Customer c LIMIT 10;
+SELECT COUNT(*) FROM Customer c2;
+SELECT firstName, Address FROM Customer c;
+
+-- QUANTOS CLIENTES MORAM NA BROADWAY?
+SELECT COUNT(*) FROM Customer c WHERE Address LIKE '%Broadway%';
+SELECT State, COUNT(*) AS Total FROM Customer c GROUP BY 1 ORDER BY Total DESC LIMIT 10;
+
+-- VERIFICAR COMPANY DOS CLIENTES
+SELECT COUNT(*) FROM Customer c WHERE Company IS NOT NULL;
+
+SELECT FirstName FROM Customer c WHERE Company IS NULL;
+
+SELECT * FROM Employee e;
+
+-- QUAIS DOS CLIENTES SÃO COLABORADORES, DUAS FORMAS DE BUSCA
+-- 1º FORMA
+SELECT c.FirstName, c.LastName FROM Customer c
+	WHERE Company IS NULL AND c.FirstName IN 
+		(SELECT e.FirstName FROM Employee e);
+-- 2º FORMA
+SELECT c.FirstName, c.LastName FROM Customer c INNER JOIN Employee e WHERE c.FirstName = e.FirstName;
+
+
+SELECT * FROM Invoice i LIMIT 10;
+SELECT * FROM InvoiceLine il ORDER BY UnitPrice DESC LIMIT 10;
+
+SELECT UnitPrice, COUNT(*) AS Record FROM InvoiceLine il GROUP BY UnitPrice;
+
+-- CLIENTES QUE POSSUEM INVOICE ASSOCIADO E A QUANTIDADE PARA CADA CLIENTE
+SELECT c.CustomerId, c.FirstName, COUNT(*) AS Record FROM Invoice i
+	INNER JOIN InvoiceLine il 
+	INNER JOIN Customer c ON c.CustomerId = i.CustomerId 
+	GROUP BY 1 ORDER BY Record;
+
+-- VERIFICANDO SE HÁ ERROS NA BASE DO INVOICEID E INVOICELINEID
+SELECT i.InvoiceId, il.InvoiceLineId FROM Invoice i 
+	INNER JOIN InvoiceLine il 
+	INNER JOIN Customer c ON c.CustomerId = i.CustomerId 
+	GROUP BY 1
+	LIMIT 100;
